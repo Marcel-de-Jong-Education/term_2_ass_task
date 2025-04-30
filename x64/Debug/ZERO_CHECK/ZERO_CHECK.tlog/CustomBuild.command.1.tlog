@@ -1,0 +1,10 @@
+^C:\USERS\SURFACE BOOK 2\DOCUMENTS\ES\TERM_2\CMAKEFILES\14E1B34845A9E659CF618CAF85368792\GENERATE.STAMP.RULE
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" "-SC:/Users/Surface Book 2/Documents/ES/term_2" "-BC:/Users/Surface Book 2/Documents/ES/term_2" --check-stamp-list CMakeFiles/generate.stamp.list --vs-solution-file "C:/Users/Surface Book 2/Documents/ES/term_2/term_2.sln"
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd

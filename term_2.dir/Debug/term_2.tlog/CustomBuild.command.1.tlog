@@ -1,0 +1,10 @@
+^C:\USERS\SURFACE BOOK 2\DOCUMENTS\ES\TERM_2\CMAKELISTS.TXT
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" "-SC:/Users/Surface Book 2/Documents/ES/term_2" "-BC:/Users/Surface Book 2/Documents/ES/term_2" --check-stamp-file "C:/Users/Surface Book 2/Documents/ES/term_2/CMakeFiles/generate.stamp"
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd

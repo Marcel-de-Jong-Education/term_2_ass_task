@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\Surface Book 2\Documents\ES\term_2\CMakeFiles\14e1b34845a9e659cf618caf85368792\INSTALL_force.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{EA79F4C1-D481-3E52-B9FF-2D79FFA8E7BA}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
