@@ -9,6 +9,8 @@
 #include "renderer.hpp"
 #include "shader_s.hpp"
 
+#include "physics.hpp"
+
 
 void framebuffer_size_callback(GLFWwindow *window, int width, int height) {
   glViewport(0, 0, width, height);
@@ -32,7 +34,7 @@ int main() {
   glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 #endif
   // initialise GLFW window
-  GLFWwindow *window = glfwCreateWindow(512, 512, "glThings", NULL, NULL);
+  GLFWwindow *window = glfwCreateWindow(1024, 1024, "glThings", NULL, NULL);
   if (window == NULL) {
     std::cout << "Failed to create GLFW window" << std::endl;
     glfwTerminate();
@@ -54,14 +56,14 @@ int main() {
   
   
   renderer::colour backgroundColour;
-  backgroundColour.tcolour[0] = 0.4f;
-  backgroundColour.tcolour[1] = 0.3f;
-  backgroundColour.tcolour[2] = 0.2f;
+  backgroundColour.tcolour[0] = 0.0f;
+  backgroundColour.tcolour[1] = 0.0f;
+  backgroundColour.tcolour[2] = 0.0f;
 
   renderer::circle tmpCircle;
   tmpCircle.origin[0] = 0.0f;
   tmpCircle.origin[1] = 0.0f;
-  tmpCircle.radius = 0.5f;
+  tmpCircle.radius = 0.9f;
 
 
   
@@ -70,9 +72,6 @@ int main() {
   
 
   renderer::init();
-
-  // uncomment this call to draw in wireframe polygons.
-  //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
   while (!glfwWindowShouldClose(window)) {
 
@@ -84,7 +83,7 @@ int main() {
       (sin(glfwGetTime() + (3.14f / 3 * 2)) + 1.0f) / 2.0f, // green
       (sin(glfwGetTime() + (3.14f / 3 * 1)) + 1.0f) / 2.0f, // blue
       */
-      0.80f, 0.40f, 0.20f, 1.0f);
+      0.15f, 0.10f, 0.20f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
 
     

@@ -6,7 +6,7 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
-const float pi = 3.141593;
+const float pi = 3.141593f;
 
 
 
