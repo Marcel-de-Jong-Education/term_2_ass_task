@@ -9,7 +9,7 @@
 #include "renderer.hpp"
 #include "shader_s.hpp"
 
-#include "physics.hpp"
+#include "astrophysics.hpp"
 
 
 void framebuffer_size_callback(GLFWwindow *window, int width, int height) {

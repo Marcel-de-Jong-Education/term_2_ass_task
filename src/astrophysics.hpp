@@ -67,21 +67,21 @@ class planet : public celestial_body
 
 
 
-        void orbit(celestial_body target)
+        void orbit(celestial_body& target) // Force the planet into a perfectly circular orbit around the target
         {
-            float distance = std::sqrt(target.pos[0] - pos[0]) * (target.pos[0] - pos[0])  +  (target.pos[1] - pos[1]) * (target.pos[1] - pos[1]); // sqrt(a^2 + b^2)
+            float distance = std::sqrt( (target.pos[0] - pos[0]) * (target.pos[0] - pos[0])  +  (target.pos[1] - pos[1]) * (target.pos[1] - pos[1]) ); // sqrt(a^2 + b^2)
 
             float attraction = G * (target.mass + mass) / (distance * distance); // G * (m1+m2)/d^2
 
             float tangential_gradient = -1 * (target.pos[0] - pos[0])/(target.pos[1] - pos[1]); // 
 
-            float net_force = std::sqrt((distance*distance) - distance + (attraction*attraction)); // total force exerted
+            float net_acceleration = std::sqrt( (2*distance*attraction) - (attraction*attraction) ); // sqrt(2ra - a^2)
 
-            float horizontal_force = std::sqrt( (net_force*net_force) / (1 + (tangential_gradient*tangential_gradient)) );
-            float vertical_force = tangential_gradient*horizontal_force;
+            float horizontal_acceleration = std::sqrt( (net_acceleration*net_acceleration) / (1 + (tangential_gradient*tangential_gradient)) );
+            float vertical_acceleration = tangential_gradient*horizontal_acceleration;
 
-            motion_vector[0] = target.motion_vector[0] + horizontal_force;
-            motion_vector[1] = target.motion_vector[1] + vertical_force;
+            motion_vector[0] = target.motion_vector[0] + horizontal_acceleration;
+            motion_vector[1] = target.motion_vector[1] + vertical_acceleration;
         }
 };
 
