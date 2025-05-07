@@ -79,9 +79,9 @@ int main()
     {
         celestial_bodies.push_back(celestial::planet
             (
-                1, // mass
+                float(i)/50, // mass
                 std::vector<double>{0.1*i - 0.9,0.2*i - 0.4},  // position
-                std::vector<double>{0.002*i,-0.003*i}, // motion
+                std::vector<double>{0.000002*i*i,-0.000003*i*i}, // motion
                 default_body_colour.rgb // colour
             ));
     }
@@ -90,7 +90,7 @@ int main()
     renderer::circle default_circle;
     default_circle.origin[0] = 0.0f; // xpos
     default_circle.origin[1] = 0.0f; // ypos
-    default_circle.radius = 0.006f; // Percentage of window size
+    default_circle.radius = 0.008f; // Percentage of window size
 
     
 
@@ -100,6 +100,8 @@ int main()
     {
         circle_list[i].origin[0] = (float)celestial_bodies[i].pos[0]; 
         circle_list[i].origin[1] = (float)celestial_bodies[i].pos[1]; 
+
+        circle_list[i].radius = sqrt(celestial_bodies[i].mass)/60;
     }
 
 

@@ -33,9 +33,11 @@ target_link_libraries(${PROJECT_NAME}
 # Set up include directories
 target_include_directories(${PROJECT_NAME} PUBLIC
     "${PROJECT_SOURCE_DIR}/dep/glThings/include"
-    "${PROJECT_SOURCE_DIR}/dep/glThings/src"  # Added this line
+    "${PROJECT_SOURCE_DIR}/dep/glThings/src"  
     "${PROJECT_BINARY_DIR}/src"
     "${PROJECT_SOURCE_DIR}/dep/glThings/dep/glad/include"
     "${PROJECT_SOURCE_DIR}/dep/glThings/dep/glfw/include"
     "${PROJECT_SOURCE_DIR}/dep/glThings/dep/glm"
 )
+
+set(CMAKE_CXX_STANDARD_LIBRARIES "-static-libgcc -static-libstdc++ ${CMAKE_CXX_STANDARD_LIBRARIES}")

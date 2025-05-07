@@ -9,7 +9,7 @@
 #include <vector>
 
 const double G = -0.00000001; // gravitational constant
-const double entropy = 0.95; // 1 = perfect, 0 = all energy lost instantly
+const double entropy = 0.99; // 1 = perfect, 0 = all energy lost instantly
 
 bool sign(long long num)
 {
