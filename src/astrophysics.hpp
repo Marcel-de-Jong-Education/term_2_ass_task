@@ -8,7 +8,8 @@
 #include <array>
 #include <vector>
 
-const float G = 1.0f; // gravitational constant
+const double G = -0.000001; // gravitational constant
+const double entropy = 0.98; // 1 = perfect, 0 = all energy lost instantly
 
 bool sign(long long num)
 {
@@ -22,11 +23,11 @@ namespace celestial
         public:
 
             float mass;
-            std::array<double, 2> pos;
-            std::array<double, 2> motion_vector;
+            std::vector<double> pos;
+            std::vector<double> motion_vector;
             float c_colour[3] = { 0.9f, 0.9f, 0.9f };
 
-            celestial_body(float mass_arg, const std::array<double, 2>& pos_arg, const std::array<double, 2>& motion_vector_arg):
+            celestial_body(float mass_arg, const std::vector<double>& pos_arg, const std::vector<double>& motion_vector_arg):
                 mass(mass_arg),
                 pos(pos_arg),
                 motion_vector(motion_vector_arg)
@@ -38,10 +39,26 @@ namespace celestial
             {
                 pos[0] += motion_vector[0];
                 pos[1] += motion_vector[1];
+
+                //pos[0] = pos[0] - std::floor(pos[0]); 
+                //pos[1] = pos[1] - std::floor(pos[1]);
+
+                motion_vector[0] *= entropy;
+                motion_vector[1] *= entropy;
             }
 
 
-            double distance_to(std::array<double,2> target) const
+            void debug_position() // manually set object position
+            {
+                std::cout << "\nEnter x: ";
+                std::cin >> pos[0];
+                std::cout << "\nEnter y: ";
+                std::cin >> pos[1];
+                std::cout << "\n\n";
+            }
+
+
+            double distance_to(std::vector<double> target) const
             {
                 return std::sqrt( 
                     (target[0] - pos[0]) * (target[0] - pos[0])  +  
@@ -50,23 +67,16 @@ namespace celestial
             }
 
 
-            double attraction_to(celestial_body& target) const
-            {
-                double d = distance_to(target.pos);
-                return G * (target.mass + mass) / (d*d); // G * (m1+m2)/d^2;
-            }
-
-
-            double velocity()
+            double velocity() const
             {
                 return std::sqrt( (motion_vector[0]*motion_vector[0]) + (motion_vector[1]*motion_vector[1]) ); // v = sqrt(x^2 + y^2)
             }
 
 
-            std::vector<std::array<double,2>> calculate_trajectory(int steps) const
+            std::vector<std::vector<double>> calculate_trajectory(int steps) const
             {
-                std::array<double,2> projected_pos = pos;
-                std::vector<std::array<double,2>> calculated_positions = {projected_pos};
+                std::vector<double> projected_pos = pos;
+                std::vector<std::vector<double>> calculated_positions = {projected_pos};
                 for (int i = 0; i < abs(steps); i++)
                 {
                     projected_pos[0] += (2*(int)sign(steps)-1) * motion_vector[0];
@@ -75,6 +85,42 @@ namespace celestial
                     calculated_positions.push_back(projected_pos);
                 }
                 return calculated_positions;
+            }
+
+
+
+            std::vector<double> gravitational_force_to(const celestial_body& target) const
+            {
+                double distance = distance_to(target.pos);
+                if (distance == 0) {std::cout <<  "WARNING: DIVISION BY ZERO!\n\n";}
+                double absolute_force = G * (mass * target.mass) / (distance*distance); // G(m1+m2)/(d^2)
+                double dx = pos[0]-target.pos[0]; // x1 - x2
+                double dy = pos[1]-target.pos[1]; // y2 - y2
+
+                double force_distance = std::sqrt((dx*dx) + (dy*dy)); // c = sqrt(a^2 + b^2)
+                
+                return 
+                {
+                    dx/force_distance * absolute_force, // horizontal force
+                    dy/force_distance * absolute_force, // vertical force
+                    absolute_force // total force
+                };
+            }
+
+
+
+            std::vector<double> calculate_gravitational_moment(std::vector<celestial_body>& objects) const
+            {
+                std::vector<double> moment = {0,0};
+                for (celestial_body& object : objects) // because distance to the self can uhm cause problems
+                {
+                    if (&object != this)
+                    {
+                        moment[0] += gravitational_force_to(object)[0];
+                        moment[1] += gravitational_force_to(object)[1];
+                    }
+                }
+                return moment;
             }
     };
 
@@ -87,9 +133,8 @@ namespace celestial
             float c_colour[3];
             float brightness;
 
-            planet(float mass_arg, const std::array<double, 2>& pos_arg, const std::array<double, 2>& motion_vector_arg, const float colour_arg[3], float brightness_arg = 1.0f): 
-                celestial_body(mass_arg, pos_arg, motion_vector_arg), 
-                brightness(brightness_arg)
+            planet(float mass_arg, const std::vector<double> pos_arg, const std::vector<double> motion_vector_arg,  std::vector<float> colour_arg): 
+                celestial_body(mass_arg, pos_arg, motion_vector_arg)
             {
                 for (int i = 0; i < 3; ++i) c_colour[i] = colour_arg[i];
             }
@@ -125,7 +170,7 @@ namespace celestial
             float c_colour[3];
             float luminosity;
 
-            star(float mass_arg, const std::array<double, 2>& pos_arg, const std::array<double, 2>& motion_vector_arg, const float colour_arg[3], float luminosity_arg): 
+            star(float mass_arg, const std::vector<double>& pos_arg, const std::vector<double>& motion_vector_arg, const float colour_arg[3], float luminosity_arg): 
                 celestial_body(mass_arg, pos_arg, motion_vector_arg),
                 luminosity(luminosity_arg)
             {
@@ -134,7 +179,7 @@ namespace celestial
 
             
 
-            double intensity_at(std::array<double,2> target)
+            double intensity_at(std::vector<double> target)
             {
                 double distance = distance_to(target);
                 return luminosity / (distance*distance); // L/d^2

@@ -10,6 +10,7 @@
 #include "shader_s.hpp"
 
 #include "astrophysics.hpp"
+#include "project_logic.hpp"
 
 
 std::vector<celestial::celestial_body> celestial_bodies = {};
@@ -43,7 +44,7 @@ int main()
     GLFWwindow *window = glfwCreateWindow(2048, 1024, "glThings", NULL, NULL);
     if (window == NULL) 
     {
-        std::cout << "Failed to create GLFW window" << std::endl;
+        std::cout << "Failed to create GLFW window" << std::endl; 
         glfwTerminate();
         return -1;
     }
@@ -55,6 +56,8 @@ int main()
         std::cout << "Failed to initialize GLAD" << std::endl;
         return -1;
     }
+
+    renderer::get_window(window); // so renderer knows what the window is
 
 
 
@@ -68,12 +71,36 @@ int main()
     backgroundColour.rgb[1] = 0.0f; // Black
     backgroundColour.rgb[2] = 0.0f; // Black
 
-    renderer::circle tmpCircle;
-    tmpCircle.origin[0] = 0.0f; // xpos
-    tmpCircle.origin[1] = 0.0f; // ypos
-    tmpCircle.radius = 0.95f; // Percentage of window size
+    renderer::colour default_body_colour;
+    default_body_colour.rgb = {0.9f, 0.9f, 0.9f};
 
 
+    for (int i = 0; i < 4; i++)
+    {
+        celestial_bodies.push_back(celestial::planet
+            (
+                1, // mass
+                std::vector<double>{0.1*i,0.2*i},  // position
+                std::vector<double>{0.002*i*i,-0.002*i*i}, // motion
+                default_body_colour.rgb // colour
+            ));
+    }
+
+    
+    renderer::circle default_circle;
+    default_circle.origin[0] = 0.0f; // xpos
+    default_circle.origin[1] = 0.0f; // ypos
+    default_circle.radius = 0.03f; // Percentage of window size
+
+    
+
+    std::vector<renderer::circle> circle_list(celestial_bodies.size(), default_circle); // circles to draw, representatations of the actual objects
+
+    for (int i = 0; i < circle_list.size(); i++)
+    {
+        circle_list[i].origin[0] = (float)celestial_bodies[i].pos[0]; 
+        circle_list[i].origin[1] = (float)celestial_bodies[i].pos[1]; 
+    }
 
 
 
@@ -85,33 +112,27 @@ int main()
     {
         processInput(window);
 
-        glClearColor(
-          /*
-          (sin(glfwGetTime() + (3.14f / 3 * 3)) + 1.0f) / 2.0f, // red
-          (sin(glfwGetTime() + (3.14f / 3 * 2)) + 1.0f) / 2.0f, // green
-          (sin(glfwGetTime() + (3.14f / 3 * 1)) + 1.0f) / 2.0f, // blue
-          */
-          0.15f, 0.10f, 0.20f, 1.0f);
+        glClearColor(0.15f, 0.10f, 0.20f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
-
         
-        render::circle(tmpCircle, backgroundColour);
 
-        
+
+        for (int i = 0; i < circle_list.size(); i++)
+        {
+            circle_list[i].origin[0] = (float)celestial_bodies[i].pos[0];
+            circle_list[i].origin[1] = (float)celestial_bodies[i].pos[1];
+            render::circle(circle_list[i], default_body_colour);
+        }
         
         ourShader.use();
 
         glfwSwapBuffers(window);
         glfwPollEvents();
 
-    }
+        project_logic::sim_loop(celestial_bodies);
+        //std::cout << celestial_bodies[0].pos[0] << ", " << celestial_bodies[0].pos[1] << '\n';
+    }   
 
-
-    /*
-    glDeleteVertexArrays(1, &VAO);
-    glDeleteBuffers(1, &VBO);
-    glDeleteBuffers(1, &EBO);
-    */
     glfwTerminate();
     return 0;
 }
