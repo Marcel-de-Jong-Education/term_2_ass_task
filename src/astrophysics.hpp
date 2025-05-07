@@ -8,8 +8,8 @@
 #include <array>
 #include <vector>
 
-const double G = -0.000001; // gravitational constant
-const double entropy = 0.98; // 1 = perfect, 0 = all energy lost instantly
+const double G = -0.00000001; // gravitational constant
+const double entropy = 0.95; // 1 = perfect, 0 = all energy lost instantly
 
 bool sign(long long num)
 {
@@ -40,8 +40,9 @@ namespace celestial
                 pos[0] += motion_vector[0];
                 pos[1] += motion_vector[1];
 
-                //pos[0] = pos[0] - std::floor(pos[0]); 
-                //pos[1] = pos[1] - std::floor(pos[1]);
+                pos[0] = 1 * (pos[0] - std::floor(pos[0])) - 0; 
+                pos[1] = 1 * (pos[1] - std::floor(pos[1])) - 0;
+                
 
                 motion_vector[0] *= entropy;
                 motion_vector[1] *= entropy;
