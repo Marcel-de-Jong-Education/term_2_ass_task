@@ -1,3 +1,6 @@
 [submodule "include/glfw"]
 	path = include/glfw
 	url = https://github.com/glfw/glfw.git
+[submodule "dep/glThings"]
+	path = dep/glThings
+	url = https://github.com/hacktheegg/glThings.git

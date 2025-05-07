@@ -6,7 +6,7 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
-#include "renderer.hpp"
+#include <renderer.hpp>
 #include "shader_s.hpp"
 
 #include "astrophysics.hpp"
@@ -64,9 +64,9 @@ int main()
 
 
     renderer::colour backgroundColour;
-    backgroundColour.tcolour[0] = 0.0f; // Black 
-    backgroundColour.tcolour[1] = 0.0f; // Black
-    backgroundColour.tcolour[2] = 0.0f; // Black
+    backgroundColour.rgb[0] = 0.0f; // Black 
+    backgroundColour.rgb[1] = 0.0f; // Black
+    backgroundColour.rgb[2] = 0.0f; // Black
 
     renderer::circle tmpCircle;
     tmpCircle.origin[0] = 0.0f; // xpos
