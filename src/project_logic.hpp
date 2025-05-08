@@ -21,6 +21,7 @@ namespace project_logic
 
         for (celestial::celestial_body& object : objects) // update positions
         {
+            object.limit_orthogonal_velocity(0.1);
             object.update_position();
         }
     }

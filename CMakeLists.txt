@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.10)
 project(term_2)
 
+set(CMAKE_CXX_STANDARD_LIBRARIES "-static-libgcc -static-libstdc++ ${CMAKE_CXX_STANDARD_LIBRARIES}")
+
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 # Create GLAD library directly
@@ -39,5 +41,3 @@ target_include_directories(${PROJECT_NAME} PUBLIC
     "${PROJECT_SOURCE_DIR}/dep/glThings/dep/glfw/include"
     "${PROJECT_SOURCE_DIR}/dep/glThings/dep/glm"
 )
-
-set(CMAKE_CXX_STANDARD_LIBRARIES "-static-libgcc -static-libstdc++ ${CMAKE_CXX_STANDARD_LIBRARIES}")

@@ -75,13 +75,13 @@ int main()
     default_body_colour.rgb = {0.9f, 0.9f, 0.9f};
 
 
-    for (int i = 0; i < 100; i++)
+    for (int i = 0; i < 64; i++)
     {
         celestial_bodies.push_back(celestial::planet
             (
-                float(i)/50, // mass
+                float(i+1) / 30, // mass
                 std::vector<double>{0.1*i - 0.9,0.2*i - 0.4},  // position
-                std::vector<double>{0.000002*i*i,-0.000003*i*i}, // motion
+                std::vector<double>{0,0}, // motion
                 default_body_colour.rgb // colour
             ));
     }

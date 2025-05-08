@@ -9,7 +9,7 @@
 #include <vector>
 
 const double G = -0.00000001; // gravitational constant
-const double entropy = 0.99; // 1 = perfect, 0 = all energy lost instantly
+const double entropy = 0.995; // 1 = perfect, 0 = all energy lost instantly
 
 bool sign(long long num)
 {
@@ -74,6 +74,20 @@ namespace celestial
             }
 
 
+
+            void limit_orthogonal_velocity(const double c) // if a body is going faster than c horizontally or vertically, it's speed is set to c
+            {
+                if (abs(motion_vector[0]) > c) 
+                {
+                    motion_vector[0] = (motion_vector[0] < 0) ? -c : c;
+                }
+                if (abs(motion_vector[1]) > c)
+                {
+                    motion_vector[1] = (motion_vector[1] < 0) ? -c : c;
+                }
+            }
+
+
             std::vector<std::vector<double>> calculate_trajectory(int steps) const
             {
                 std::vector<double> projected_pos = pos;
@@ -94,7 +108,8 @@ namespace celestial
             {
                 double distance = distance_to(target.pos);
                 if (distance == 0) {std::cout <<  "WARNING: DIVISION BY ZERO!\n\n";}
-                double absolute_force = G * (mass * target.mass) / (distance*distance); // G(m1+m2)/(d^2)
+                double net_force = G * (mass + target.mass) / (distance*distance); // G(m1+m2)/(d^2)
+                double self_force = net_force * target.mass/(mass+target.mass);
                 double dx = pos[0]-target.pos[0]; // x1 - x2
                 double dy = pos[1]-target.pos[1]; // y2 - y2
 
@@ -102,9 +117,9 @@ namespace celestial
                 
                 return 
                 {
-                    dx/force_distance * absolute_force, // horizontal force
-                    dy/force_distance * absolute_force, // vertical force
-                    absolute_force // total force
+                    dx/force_distance * self_force, // horizontal force
+                    dy/force_distance * self_force, // vertical force
+                    self_force // total force
                 };
             }
 
