@@ -1,7 +1,7 @@
 // https://learnopengl.com/Getting-started/Hello-Window
 
 #include <cmath>
-#include <iostream>
+//#include <iostream>
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
@@ -14,6 +14,7 @@
 
 
 std::vector<celestial::celestial_body> celestial_bodies = {};
+std::vector<celestial::celestial_body>* project_logic::bodies = nullptr;
 
 
 void framebuffer_size_callback(GLFWwindow *window, int width, int height) 
@@ -30,7 +31,7 @@ void processInput(GLFWwindow *window)
 
 int main() 
 {
-    std::cout << "Hello, World!" << std::endl;
+    //std::cout << "Hello, World!" << std::endl;
 
     // initialise GLFW
     glfwInit();
@@ -75,11 +76,11 @@ int main()
     default_body_colour.rgb = {0.9f, 0.9f, 0.9f};
 
 
-    for (int i = 0; i < 64; i++)
+    for (int i = 0; i < 16; i++)
     {
         celestial_bodies.push_back(celestial::planet
             (
-                float(i+1) / 30, // mass
+                float(i+1) / 16, // mass
                 std::vector<double>{0.1*i - 0.9,0.2*i - 0.4},  // position
                 std::vector<double>{0,0}, // motion
                 default_body_colour.rgb // colour
@@ -105,8 +106,9 @@ int main()
     }
 
 
+    project_logic::get_bodies(celestial_bodies);
 
-
+    glfwSetMouseButtonCallback(window, project_logic::mouse_button_callback); // Instruct glfw to use my function for mouseclicks
 
     renderer::init();
 
@@ -132,7 +134,16 @@ int main()
         glfwPollEvents();
 
         project_logic::sim_loop(celestial_bodies);
-        //std::cout << celestial_bodies[0].pos[0] << ", " << celestial_bodies[0].pos[1] << '\n';
+
+        // very digusting
+        if (celestial_bodies.size() > circle_list.size()) // handles one new addition to the list of bodies at a time
+        {
+            circle_list.push_back(default_circle);
+            circle_list.back().origin[0] = (float)celestial_bodies.back().pos[0]; 
+            circle_list.back().origin[1] = (float)celestial_bodies.back().pos[1]; 
+
+            circle_list.back().radius = sqrt(celestial_bodies.back().mass)/60;
+        }
     }   
 
     glfwTerminate();
