@@ -57,7 +57,7 @@
 * Simple CLI opened at an appropriate size and location with clear instructions printed out on how to operate the programme.
 
 #### Error Handling
-* Potential division by zero if two objects occupied the exact same position. This is because gravitational attraction is G(m1+m1)/(d^2) $`G\frac{m_1+m_2}{d^2}`$ where d is distance. If they occupy the same spot then distance will be zero hence the division by zero. It is however an extremely unlikely edge case as each coordinate is stored as a double and generally objects travel several orders of magnitude higher distances per step than 2^-63.
+* Potential division by zero if two objects occupied the exact same position. This is because gravitational attraction is $`G\frac{m_1+m_2}{d^2}`$ where d is distance. If they occupy the same spot then distance will be zero hence the division by zero. It is however an extremely unlikely edge case as each coordinate is stored as a double and generally objects travel several orders of magnitude higher distances per step than $`2^-63`$.
 * This would be handled by simply returning a gravitational attraction of zero if the programme detects a distance of 0.
 
 ### Non-Functional Specifications
