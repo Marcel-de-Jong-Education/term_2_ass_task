@@ -1,37 +1,34 @@
 // https://learnopengl.com/Getting-started/Hello-Window
-
-#include <cmath>
-//#include <iostream>
-
-#include <glad/glad.h>
+// these 3 includes are just for graphics
+#include <glad/glad.h> 
 #include <GLFW/glfw3.h>
-
-#include <renderer.hpp>
 #include "shader_s.hpp"
-
+//
+// these are both headers I fully wrote myself for this project!!
 #include "astrophysics.hpp"
 #include "project_logic.hpp"
+//
 
+std::vector<celestial::celestial_body> celestial_bodies = {}; // a vector of all the objects that fly around!
+std::vector<celestial::celestial_body>* project_logic::bodies = nullptr; // so th project_logic header can monipulate the celestial_bodies vector
 
-std::vector<celestial::celestial_body> celestial_bodies = {};
-std::vector<celestial::celestial_body>* project_logic::bodies = nullptr;
-
-
-void framebuffer_size_callback(GLFWwindow *window, int width, int height) 
+unsigned int initial_object_count = 16; // how many objects are there at the start of the programme
+ 
+void framebuffer_size_callback(GLFWwindow *window, int width, int height) //
 {
     glViewport(0, 0, width, height);
 }
 
-void processInput(GLFWwindow *window) 
+void processInput(GLFWwindow *window)  // simple function to manage input to the window
 {
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
         glfwSetWindowShouldClose(window, true);
     }
 }
 
-int main() 
+int main() // this is so C++ 101 im not going to explain (even tho it would have been easier than typing this XP)
 {
-    //std::cout << "Hello, World!" << std::endl;
+    std::cout << "Hello, World!" << std::endl; // first sign of life when the programme starts
 
     // initialise GLFW
     glfwInit();
@@ -41,9 +38,9 @@ int main()
     #ifdef __APPLE__
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
     #endif
-    // initialise GLFW window
-    GLFWwindow *window = glfwCreateWindow(2048, 1024, "glThings", NULL, NULL);
-    if (window == NULL) 
+
+    GLFWwindow *window = glfwCreateWindow(2048, 1024, "Space", NULL, NULL); // initialise the GLFW window to be 2048x1024 pixels with the title "Space"
+    if (window == NULL)  // handle something going wrong with window creation
     {
         std::cout << "Failed to create GLFW window" << std::endl; 
         glfwTerminate();
@@ -51,101 +48,103 @@ int main()
     }
     glfwMakeContextCurrent(window);
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
-    // initialise GLAD function pointers
-    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) 
+
+    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) // initialise glad function pointers AND ensure it actually worked while at it
     {
-        std::cout << "Failed to initialize GLAD" << std::endl;
+        std::cout << "Failed to initialise GLAD" << std::endl;
         return -1;
     }
 
-    renderer::get_window(window); // so renderer knows what the window is
+    renderer::get_window(window); // so renderer.hpp knows what the window is
 
 
 
     //// SHADERS ////
-    Shader ourShader("./shader.vert", "./shader.frag");
+    Shader ourShader("./shader.vert", "./shader.frag"); // the programme breaks if these arent in the same place as the executable
 
 
-
-    renderer::colour backgroundColour;
-    backgroundColour.rgb[0] = 0.0f; // Black 
-    backgroundColour.rgb[1] = 0.0f; // Black
-    backgroundColour.rgb[2] = 0.0f; // Black
-
-    renderer::colour default_body_colour;
-    default_body_colour.rgb = {0.9f, 0.9f, 0.9f};
+    renderer::colour default_body_colour; // initialise the default colour of the bodies! maybe the code IS the comment sometimes...
+    default_body_colour.rgb = {0.9f, 0.9f, 0.9f}; // i decided that planets need a colour argument unlike the celestial_body parent for some reason so this needs to be here 
 
 
-    for (int i = 0; i < 16; i++)
+    for (int i = 0; i < initial_object_count; i++) // spawn initial_object_count amount of objects
     {
-        celestial_bodies.push_back(celestial::planet
+        celestial_bodies.push_back // append to the celestial_bodies vector
+        (
+            celestial::planet // MAKING A PLANET IM A DEITY WOWWWOWOWOWOW
             (
-                float(i+1) / 16, // mass
-                std::vector<double>{0.1*i - 0.9,0.2*i - 0.4},  // position
-                std::vector<double>{0,0}, // motion
+                float(i+1) / initial_object_count, // mass ranges from very small to 1 :)
+                std::vector<double>{0.1*i - 0.9, 0.2*i - 0.4},  // spawn positions are spread so they dont divide by zero, that would be bad (or not, since the error is actually handled!!)
+                std::vector<double>{0,0}, // initial motion
                 default_body_colour.rgb // colour
-            ));
+            )
+        );
     }
 
     
-    renderer::circle default_circle;
+    renderer::circle default_circle; // default appearance for objects before we ✨customise✨ them
     default_circle.origin[0] = 0.0f; // xpos
     default_circle.origin[1] = 0.0f; // ypos
     default_circle.radius = 0.008f; // Percentage of window size
 
     
 
-    std::vector<renderer::circle> circle_list(celestial_bodies.size(), default_circle); // circles to draw, representatations of the actual objects
+    std::vector<renderer::circle> circle_list(celestial_bodies.size(), default_circle); // list of circles to draw; the *representatations* of the actual objects
 
-    for (int i = 0; i < circle_list.size(); i++)
+    for (int i = 0; i < circle_list.size(); i++) // give ALL the objects a face! :D
     {
+        // set the positions of the representations to that of the objects
         circle_list[i].origin[0] = (float)celestial_bodies[i].pos[0]; 
         circle_list[i].origin[1] = (float)celestial_bodies[i].pos[1]; 
+        //
 
-        circle_list[i].radius = sqrt(celestial_bodies[i].mass)/60;
+        circle_list[i].radius = sqrt(celestial_bodies[i].mass) / 64; // the size of the objects is preportional tothe sqrt of their mass!; 64^-1 just feels right idk
     }
 
 
-    project_logic::get_bodies(celestial_bodies);
+    project_logic::get_bodies(celestial_bodies); // so the project logic actually can access the vector of objects lol
 
-    glfwSetMouseButtonCallback(window, project_logic::mouse_button_callback); // Instruct glfw to use my function for mouseclicks
+    glfwSetMouseButtonCallback(window, project_logic::mouse_button_callback); // Instruct glfw to use the function defined in project_logic for mouseclicks
 
-    renderer::init();
+    renderer::init(); // INITIALISE THE RENDERER 🔥🔥🔥
 
-    while (!glfwWindowShouldClose(window)) 
+    while (!glfwWindowShouldClose(window)) // while the window isnt instructed to close
     {
-        processInput(window);
+        processInput(window); // if there has been input, *deal with it　😎* [insert explosion sfx meme here idk]
 
-        glClearColor(0.15f, 0.10f, 0.20f, 1.0f);
+        glClearColor(0.15f, 0.10f, 0.20f, 1.0f); // background colour
         glClear(GL_COLOR_BUFFER_BIT);
         
 
 
-        for (int i = 0; i < circle_list.size(); i++)
+        for (int i = 0; i < circle_list.size(); i++) // make a circle to render from the list of circle representation information objects 
         {
-            circle_list[i].origin[0] = (2 * (float)celestial_bodies[i].pos[0]) - 1;
+            // i had some bugs and making the positions 2x-1 fixed them, im not sure why but im not touching it!
+            circle_list[i].origin[0] = (2 * (float)celestial_bodies[i].pos[0]) - 1; 
             circle_list[i].origin[1] = (2 * (float)celestial_bodies[i].pos[1]) - 1;
             render::circle(circle_list[i], default_body_colour);
         }
         
-        ourShader.use();
+        ourShader.use(); // DRAW !!!!!!!!
 
-        glfwSwapBuffers(window);
-        glfwPollEvents();
+        glfwSwapBuffers(window); // put on the window
+        glfwPollEvents(); // processes events in the event queue
 
-        project_logic::sim_loop(celestial_bodies);
+        project_logic::sim_loop(celestial_bodies); // do all the physics calculations and things; basically, an actual simulation step happens here!
 
         // very digusting
         if (celestial_bodies.size() > circle_list.size()) // handles one new addition to the list of bodies at a time
         {
-            circle_list.push_back(default_circle);
+            circle_list.push_back(default_circle); // add a new template
+            // set appropriate coordinates
             circle_list.back().origin[0] = (float)celestial_bodies.back().pos[0]; 
             circle_list.back().origin[1] = (float)celestial_bodies.back().pos[1]; 
-
-            circle_list.back().radius = sqrt(celestial_bodies.back().mass)/60;
+            //
+            circle_list.back().radius = sqrt(celestial_bodies.back().mass) / 64; // size is calculated the same way as the other objects
         }
     }   
 
-    glfwTerminate();
-    return 0;
+    // clean up at the end of the programme
+    glfwTerminate(); 
+    return 0; // Done!! 
 }

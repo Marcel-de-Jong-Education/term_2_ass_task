@@ -1,39 +1,38 @@
 #ifndef PROJECT_LOGIC
 #define PROJECT_LOGIC
-#include "astrophysics.hpp"
-#include <renderer.hpp>
 
-#include <windows.h>
-#include <shellapi.h>
-
+#include <windows.h> // im assuming the marker runs windows 11 so im writing this for windows 11
+#include <shellapi.h> // for the CLI stuff
+#include "astrophysics.hpp" // definitions for the objects and their methods
 #include <functional> // so we can pass functions as arguments!
-
-#include <string> // managing text in console is easier
+#include <string> // managing text in CLI is easier
+#include <renderer.hpp> // a graphics module
 
 namespace project_logic
 {
-    extern std::vector<celestial::celestial_body>* bodies;
+    extern std::vector<celestial::celestial_body>* bodies; // the vector of bodies in main.cpp shall be accessed locally via this!
 
 
-    inline void sim_loop(std::vector<celestial::celestial_body>& objects)
+    inline void sim_loop(std::vector<celestial::celestial_body>& objects) // one tick of the simulation
     {
-        // Calculate new motions based on gravity
-        std::vector<double> gravitational_moment = {0,0};
+        // Calculate new motion vectors based on gravity
+        std::vector<double> gravitational_moment = {0,0}; // initialised outside the loop to save resources
         for (celestial::celestial_body& object : objects) // find forces
         {
-            gravitational_moment = object.calculate_gravitational_moment(objects);
+            gravitational_moment = object.calculate_gravitational_moment(objects); // 
 
-            object.motion_vector[0] += gravitational_moment[0];
-            object.motion_vector[1] += gravitational_moment[1];
+            // ADD and not SET the gravitational moment to conserve momentum!!
+            object.motion_vector[0] += gravitational_moment[0]; 
+            object.motion_vector[1] += gravitational_moment[1]; 
+            //
         }
 
         // Collision handling TODO
 
-
         for (celestial::celestial_body& object : objects) // update positions
         {
-            object.limit_orthogonal_velocity(0.1);
-            object.update_position();
+            object.limit_orthogonal_velocity(0.1); // broken
+            object.update_position(); //
         }
     }
 
@@ -41,7 +40,7 @@ namespace project_logic
 
 
 
-    inline void get_bodies(std::vector<celestial::celestial_body>& extern_bodies)
+    inline void get_bodies(std::vector<celestial::celestial_body>& extern_bodies) // retrieves the vector of celestial bodies for local use
     {
         bodies = &extern_bodies;
     }
@@ -57,16 +56,17 @@ namespace project_logic
 
 
 
-    inline void user_create_object(int xpos, int ypos)
+    inline void user_create_object(int xpos, int ypos) // allows the user to create an object!
     {
-        std::vector<int> window_dimensions = render::export_window_dimensions();
+        std::vector<int> window_dimensions = render::export_window_dimensions(); // get the window dimensions
 
-        float mass;
-        std::vector<double> position = {};
-        std::vector<double> motion = {};
+        float mass; // mass of the new object
+        std::vector<double> position = {}; // position of the new object
+        std::vector<double> motion = {}; // motion of the new object
 
+        // take inputs //
         std::cout << "Enter object mass:\n";
-        while (true)
+        while (true) // keep trying until a good input retrieved
         {
             std::cin >> mass;
             if (std::cin.fail()) 
@@ -75,33 +75,30 @@ namespace project_logic
             } 
             else 
             {
-                break;
+                break; // we have good input :)
             }
         }
 
-
-
-
-        std::string line;
+        std::string line; // for retrieving input to be processed before use
         std::cout << "Enter object x position:\n";
-
         
         std::getline(std::cin, line);
         if (!line.empty()) // if there is an input
         {
-            while (true)
+            while (true) // keep trying until good input
             {
-                std::stringstream ss(line);
-                float pos_choice;
+                std::stringstream ss(line); // get the line from CLI
+                float pos_choice; // initialise pos_choice
 
-                if (!(ss >> pos_choice)) 
+                if (!(ss >> pos_choice)) // handle bad input
                 {
                     std::cerr << "Invalid input. I'm tired of writing these error messages, so try again kindly.\n";
                 } 
-                else 
+                else // handle *good* input
                 {
-                    position.push_back(pos_choice);
-                    break;
+                    position.push_back(pos_choice); //
+                    std::cout << "x pos entered: " << pos_choice << '\n';
+                    break; // stop trying! we have what we want!!
                 }
             }
         } 
@@ -127,13 +124,14 @@ namespace project_logic
                 else 
                 {
                     position.push_back(pos_choice);
+                    std::cout << "y pos entered: " << pos_choice << '\n';
                     break;
                 }
             }
         } 
         else // no input, so default to clicked position
         {
-            position.push_back((double)ypos / (double)window_dimensions[1]);
+            position.push_back(1 - ((double)ypos / (double)window_dimensions[1])); // why is it 1 - x? i have no idea but it fixed the problem
         }
 
 
@@ -157,13 +155,14 @@ namespace project_logic
                 else 
                 {
                     motion.push_back(mot_choice);
+                    std::cout << "x motion entered: " << mot_choice << '\n';
                     break;
                 }
             }
         } 
         else // no input, so default to zero~~
         {
-            motion.push_back(0.0);
+            motion.push_back(0.0); 
         }
 
         std::cout << "Enter object y motion:\n";
@@ -183,6 +182,7 @@ namespace project_logic
                 else 
                 {
                     motion.push_back(mot_choice);
+                    std::cout << "y motion entered: " << mot_choice << '\n';
                     break;
                 }
             }
@@ -197,7 +197,7 @@ namespace project_logic
 
         // oms, whomever might be reading this, u just made it thru the most disgusting part of my code (i hope)!! u should have a gold star
 
-        bodies->push_back(celestial::celestial_body(mass, position, motion));
+        bodies->push_back(celestial::celestial_body(mass, position, motion)); // add the new object to the list in the main code
     }
 
 
@@ -210,8 +210,14 @@ namespace project_logic
 
         AllocConsole(); // new console!! yay!
 
-        HWND consoleWnd = GetConsoleWindow();
-        if (consoleWnd) MoveWindow(consoleWnd, x, y, 800, 500, TRUE);
+        HWND consoleWnd = GetConsoleWindow(); // get console
+        if (consoleWnd) MoveWindow // definite the CLI
+        (
+            consoleWnd, 
+            x, y, // spawn position
+            500, 800, // dimensions
+            TRUE
+        );
 
         // Redirect the I/O to the new console!!!
         FILE* fp;
@@ -232,15 +238,15 @@ namespace project_logic
 
 
 
-    inline void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
+    inline void mouse_button_callback(GLFWwindow* window, int button, int action, int mods) // function for what to do if there is a mouse click
     {
         if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS) // If LMB click
         {
             double xpos, ypos;
-            glfwGetCursorPos(window, &xpos, &ypos);
-            std::cout << "Mouse click at: (" << xpos << ", " << ypos << ")\n";
+            glfwGetCursorPos(window, &xpos, &ypos); // get cursor position
+            //std::cout << "Mouse click at: (" << xpos << ", " << ypos << ")\n";
 
-            open_terminal_at((int)xpos,(int)ypos);
+            open_terminal_at((int)xpos,(int)ypos); // open the CLI for the user to use!
         }
     }    
 }
