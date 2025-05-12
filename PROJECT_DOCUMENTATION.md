@@ -24,10 +24,10 @@
 
 #### User Interface <Sprint 1 priority>
 
-* Right-click to open a menu on the cursor’s position
-* Delete menu on left-click and reopen in new position on right-click
+* Right-click to open a terminal on the cursor’s position
+* Reopen terminal in new position on right-click
 * Typable inputs
-* Implement menu potence
+* Implement terminal potence
 
 ### Non-Functional Requirements
 
@@ -39,21 +39,29 @@
 #### User Requirements
 
 * The user needs to be able to spawn objects in the programme.
-* The user will be able to specify information about the object prior to spawning it via a menu opened by clicking at a position on the window.
+* The user will be able to specify information about the object prior to spawning it via a terminal menu opened by left-clicking at a position on the window.
 * The menu will include x and y velocities of the object, it's size, mass and type.
-* A button labelled "Go" in the bottom right will spawn an object with the aforementioned specifications at the location the menu was opened.
 
 #### Inputs & Outputs
+* Left-click mouse input.
+* Terminal textual input.
+
+* Circles on window in motion display output.
 
 #### Core Features
+* Objects move around in accordance with their gravitational mass following the gravitational equations.
+* Objects be displayed on a resizable window and will not be stretched by window resizings
+* User can insert their own objects.
 
 #### User Interaction
+* Simple CLI opened at an appropriate size and location with clear instructions printed out on how to operate the programme.
 
 #### Error Handling
-
+* Potential division by zero if two objects occupied the exact same position. This is because gravitational attraction is G(m1+m1)/(d^2) where d is distance. If they occupy the same spot then distance will be zero hence the division by zero. It is however an extremely unlikely edge case as each coordinate is stored as a double and generally objects travel several orders of magnitude higher distances per step than 2^-63.
+* This would be handled by simply returning a gravitational attraction of zero if the programme detects a distance of 0.
 
 ### Non-Functional Specifications
-*
+* 
 
 ### Use Case
 Add diagramme here
