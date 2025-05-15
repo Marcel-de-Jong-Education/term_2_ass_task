@@ -104,6 +104,7 @@ namespace project_logic
         } 
         else // no input, so default to clicked position
         {
+            std::cout << "<>\n"; // Communicate to user that nothing was entered
             position.push_back((double)xpos / (double)window_dimensions[0]); // because for SOME REASON (definitely not me!!) position is PERCENTAGE ACROSS THE WINDOW, LOL
         }
 
@@ -131,6 +132,7 @@ namespace project_logic
         } 
         else // no input, so default to clicked position
         {
+            std::cout << "<>\n"; // Communicate to user that nothing was entered
             position.push_back(1 - ((double)ypos / (double)window_dimensions[1])); // why is it 1 - x? i have no idea but it fixed the problem
         }
 
@@ -162,6 +164,7 @@ namespace project_logic
         } 
         else // no input, so default to zero~~
         {
+            std::cout << "<>\n"; // Communicate to user that nothing was entered
             motion.push_back(0.0); 
         }
 
@@ -189,6 +192,7 @@ namespace project_logic
         } 
         else // no input, so default to zero!
         {
+            std::cout << "<>\n"; // Communicate to user that nothing was entered
             motion.push_back(0.0); 
         }
 
