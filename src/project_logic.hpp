@@ -240,7 +240,7 @@ namespace project_logic
 
     inline void mouse_button_callback(GLFWwindow* window, int button, int action, int mods) // function for what to do if there is a mouse click
     {
-        if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS) // If LMB click
+        if (button == GLFW_MOUSE_BUTTON_RIGHT && action == GLFW_PRESS) // If LMB click
         {
             double xpos, ypos;
             glfwGetCursorPos(window, &xpos, &ypos); // get cursor position
