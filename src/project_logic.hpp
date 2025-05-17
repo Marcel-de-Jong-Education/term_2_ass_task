@@ -58,7 +58,7 @@ namespace project_logic
 
     inline void user_create_object(int xpos, int ypos) // allows the user to create an object!
     {
-        std::vector<int> window_dimensions = render::export_window_dimensions(); // get the window dimensions
+        std::vector<int> window_dimensions = renderer::getWindowDimensions(); // get the window dimensions
 
         float mass; // mass of the new object
         std::vector<double> position = {}; // position of the new object

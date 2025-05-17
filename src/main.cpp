@@ -47,7 +47,7 @@ int main() // this is so C++ 101 im not going to explain (even tho it would have
         return -1;
     }
     glfwMakeContextCurrent(window);
-    glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
+    glfwSetFramebufferSizeCallback(window, renderer::framebuffer_size_callback);
 
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) // initialise glad function pointers AND ensure it actually worked while at it
     {
@@ -55,7 +55,7 @@ int main() // this is so C++ 101 im not going to explain (even tho it would have
         return -1;
     }
 
-    renderer::get_window(window); // so renderer.hpp knows what the window is
+    renderer::getWindowHandle(window); // so renderer.hpp knows what the window is
 
 
 
@@ -82,14 +82,14 @@ int main() // this is so C++ 101 im not going to explain (even tho it would have
     }
 
     
-    renderer::circle default_circle; // default appearance for objects before we ✨customise✨ them
+    renderer::standard::circle default_circle; // default appearance for objects before we ✨customise✨ them
     default_circle.origin[0] = 0.0f; // xpos
     default_circle.origin[1] = 0.0f; // ypos
     default_circle.radius = 0.008f; // Percentage of window size
 
     
 
-    std::vector<renderer::circle> circle_list(celestial_bodies.size(), default_circle); // list of circles to draw; the *representatations* of the actual objects
+    std::vector<renderer::standard::circle> circle_list(celestial_bodies.size(), default_circle); // list of circles to draw; the *representatations* of the actual objects
 
     for (int i = 0; i < circle_list.size(); i++) // give ALL the objects a face! :D
     {
@@ -122,7 +122,7 @@ int main() // this is so C++ 101 im not going to explain (even tho it would have
             // i had some bugs and making the positions 2x-1 fixed them, im not sure why but im not touching it!
             circle_list[i].origin[0] = (2 * (float)celestial_bodies[i].pos[0]) - 1; 
             circle_list[i].origin[1] = (2 * (float)celestial_bodies[i].pos[1]) - 1;
-            render::circle(circle_list[i], default_body_colour);
+            render::standard::circle(circle_list[i], default_body_colour);
         }
         
         ourShader.use(); // DRAW !!!!!!!!
