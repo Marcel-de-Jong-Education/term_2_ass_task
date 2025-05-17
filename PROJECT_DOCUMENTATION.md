@@ -74,20 +74,35 @@
 
 ## Design
 >User runs the programme as an executable (.exe).
+
 >Programme starts with objects already present as a window of dimensions 2048x1024.
+
 >User right clicks on a location on the window
+
 >CLI for user interaction opens
+
 >CLI displays "Enter object mass:".
+
 >User inputs a floating point number.
+
 >CLI displays "Enter object x position:".
+
 >User inputs a floating point number or presses enter to skip.
+
 >CLI displays "Enter object y position:".
+
 >User inputs a floating point number or presses enter to skip.
+
 >CLI displays "Enter object x motion:".
+
 >User inputs a floating point number or presses enter to skip.
+
 >CLI displays "Enter object y motion:".
+
 >User inputs a floating point number or presses enter to skip.
+
 >Object with the specified mass spawns at position specified at motion speicified, if the latter two fields were skipped then it spawns at the position the cursor was when the CLI was opened with no motion.
+
 >User closes the programme by clicking the close window button at the top right of the window border.
 
 ## Build and Test
