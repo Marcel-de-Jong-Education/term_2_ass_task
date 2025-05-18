@@ -8,6 +8,14 @@
 #include <string> // managing text in CLI is easier
 #include <renderer.hpp> // a graphics module
 
+std::vector<celestial::celestial_body> universal_mass = {
+    celestial::celestial_body(
+        1.0, 
+        {0.5,0.5}, 
+        {0,0}
+    )
+};
+
 namespace project_logic
 {
     extern std::vector<celestial::celestial_body>* bodies; // the vector of bodies in main.cpp shall be accessed locally via this!
@@ -30,7 +38,7 @@ namespace project_logic
 
         for (celestial::celestial_body& object : objects) // update positions
         {
-            object.limit_orthogonal_velocity(0.1); // broken
+            object.limit_orthogonal_velocity(0.01); // 
             object.update_position(); //
 
             // collision handling

@@ -7,7 +7,7 @@
 #include <vector> // because c-arrays and linked-lists arent as good
 
 const double G = -0.00000001; // gravitational constant
-const double entropy = 0.995; // 1 = perfect, 0 = all energy lost instantly
+const double entropy = 0.999; // 1 = perfect, 0 = all energy lost instantly
 
 bool sign(long long num) // is a number negative?
 {
@@ -162,7 +162,7 @@ namespace celestial //
                 //double overlapping_distance = ((sqrt(mass)/64) + (sqrt(target.mass)/64)) - distance_to(target.pos); // currently we are treating them as squares, TODO: treat them as the circles they are
                 double dx = (pos[0] - target.pos[0]) / 4;
                 double dy = (pos[1] - target.pos[1]) / 4;
-                // move both objects away scaled by their mass (an object that takes up 9/10 of the mass of them both moves 1/10 the distance)
+                // move both objects away scaled by their mass (an object that takes up 9/10 of the sum of the masses moves 1/10 the distance)
                 double mass_ratio = mass / (mass + target.mass);
                 double target_mass_ratio = target.mass / (mass + target.mass);
 
