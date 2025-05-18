@@ -61,7 +61,8 @@ namespace celestial //
 
             double distance_to(std::vector<double> target) const // returns distance from object to a set of coordinates
             {
-                return std::sqrt( 
+                return std::sqrt
+                ( 
                     (target[0] - pos[0]) * (target[0] - pos[0])  +  
                     (target[1] - pos[1]) * (target[1] - pos[1]) 
                 ); // sqrt(dx^2 + dy^2)
@@ -144,6 +145,32 @@ namespace celestial //
                     }
                 }
                 return moment; //
+            }
+
+
+
+
+            bool detect_collision(celestial_body& target) const // returns if an object is inside another
+            {
+                return (distance_to(target.pos) < ((sqrt(mass)/64) + (sqrt(target.mass)/64))/2); // object sizes are sqrt(mass)/64
+            }
+
+
+
+            void correct_overlap(celestial_body& target) // assumes objects are already overlapping
+            {
+                //double overlapping_distance = ((sqrt(mass)/64) + (sqrt(target.mass)/64)) - distance_to(target.pos); // currently we are treating them as squares, TODO: treat them as the circles they are
+                double dx = (pos[0] - target.pos[0]) / 4;
+                double dy = (pos[1] - target.pos[1]) / 4;
+                // move both objects away scaled by their mass (an object that takes up 9/10 of the mass of them both moves 1/10 the distance)
+                double mass_ratio = mass / (mass + target.mass);
+                double target_mass_ratio = target.mass / (mass + target.mass);
+
+                pos[0] += dx * target_mass_ratio ;
+                pos[1] += dy * target_mass_ratio ;
+                
+                target.pos[0] -= dx * mass_ratio;
+                target.pos[1] -= dy * mass_ratio;
             }
     };
 

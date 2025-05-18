@@ -118,7 +118,7 @@ The programme mostly meets the requirements with some niche aspects not implemen
 ### 2. Does the programme perform properly?
 Currently there is a bug where it is impossible to textually specify the x-coordinate of an spawned object because the CLI automagically skips it.
 Otherwise, all input is handled properly!
-It runs well* on my laptop (GTX 1060, Core i5-8350U, 16GB DDR4, Windows 11) with as many as 100 objects.
+It runs well`*` on my laptop (GTX 1060, Core i5-8350U, 16GB DDR4, Windows 11) with as many as 100 objects.
 *But* due to the $`O(n^2)`$ time complexity when 256 objects were tested the framerate was in the single digits.
 
 `*`*>60fps*

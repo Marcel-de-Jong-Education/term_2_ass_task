@@ -67,13 +67,13 @@ int main() // this is so C++ 101 im not going to explain (even tho it would have
     default_body_colour.rgb = {0.9f, 0.9f, 0.9f}; // i decided that planets need a colour argument unlike the celestial_body parent for some reason so this needs to be here 
 
 
-    for (int i = 0; i < initial_object_count; i++) // spawn initial_object_count amount of objects
+    for (unsigned int i = 0; i < initial_object_count; i++) // spawn initial_object_count amount of objects
     {
         celestial_bodies.push_back // append to the celestial_bodies vector
         (
             celestial::planet // MAKING A PLANET IM A DEITY WOWWWOWOWOWOW
             (
-                float(i+1) / initial_object_count, // mass ranges from very small to 1 :)
+                (float(i+1) / initial_object_count), // mass ranges from very small to 1 :)
                 std::vector<double>{0.1*i - 0.9, 0.2*i - 0.4},  // spawn positions are spread so they dont divide by zero, that would be bad (or not, since the error is actually handled!!)
                 std::vector<double>{0,0}, // initial motion
                 default_body_colour.rgb // colour

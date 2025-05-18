@@ -27,12 +27,21 @@ namespace project_logic
             //
         }
 
-        // Collision handling TODO
 
         for (celestial::celestial_body& object : objects) // update positions
         {
             object.limit_orthogonal_velocity(0.1); // broken
             object.update_position(); //
+
+            // collision handling
+            for (celestial::celestial_body& target : objects)
+            {
+                if (object.pos != target.pos && target.detect_collision(object))
+                {
+                    target.correct_overlap(object);
+                }
+            }
+            //
         }
     }
 
