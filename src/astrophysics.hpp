@@ -6,8 +6,8 @@
 #include <cmath> // I hope it is apparent why a module for mathematical functions would be valuable in such a mathematics-heavy project
 #include <vector> // because c-arrays and linked-lists arent as good
 
-const double G = -0.00000001; // gravitational constant
-const double entropy = 0.999; // 1 = perfect, 0 = all energy lost instantly
+const double G = -0.000000000066743; // gravitational constant
+const double entropy = 0.99999999; // 1 = perfect, 0 = all energy lost instantly
 
 bool sign(long long num) // is a number negative?
 {
@@ -152,7 +152,7 @@ namespace celestial //
 
             bool detect_collision(celestial_body& target) const // returns if an object is inside another
             {
-                return (distance_to(target.pos) < ((sqrt(mass)/64) + (sqrt(target.mass)/64))/2); // object sizes are sqrt(mass)/64
+                return (distance_to(target.pos) < ((sqrt(mass)/64.0) + (sqrt(target.mass)/64.0))/2); // object sizes are sqrt(mass)/64
             }
 
 
@@ -160,25 +160,27 @@ namespace celestial //
             void correct_overlap(celestial_body& target) // assumes objects are already overlapping
             {
                 double distance = distance_to(target.pos);
-                double overlapping_distance = ((sqrt(mass)/64) + (sqrt(target.mass)/64)) - distance; // currently we are treating them as squares, TODO: treat them as the circles they are
+                double overlapping_distance = ((sqrt(mass)/64.0) + (sqrt(target.mass)/64.0)) - distance; // r_1 + r_2 - d
 
-                double dx = (pos[0] - target.pos[0]) /4; // x_1 - x_2
-                double dy = (pos[1] - target.pos[1]) /4; // y_1 - y_2
+                double dx = target.pos[0] - pos[0]; // x_2 - x_1
+                double dy = target.pos[1] - pos[1]; // y_2 - y_1
 
-                double d_ratio = overlapping_distance / distance;
+                double horizontal_overlap = dx / distance * overlapping_distance /4; // for every unit of distance we get this much horizontal overlap, then multiply by the overlapping distance as the scale factor
+                double vertical_overlap = dy / distance * overlapping_distance /4; // ditto above
 
-                double horizontal_overlap = dx / distance * overlapping_distance; // for every unit of distance we get this much horizontal overlap, then multiply by the ratio between overlap and total as a scale factor
-                double vertical_overlap = dy / distance * overlapping_distance;
-
-                // move both objects away scaled by their mass (an object that takes up 9/10 of the sum of the masses moves 1/10 the distance)
+                // heavier objects move less and lighter objects move more
                 double mass_ratio = mass / (mass + target.mass);
                 double target_mass_ratio = target.mass / (mass + target.mass);
 
-                pos[0] += horizontal_overlap * target_mass_ratio ;
-                pos[1] += vertical_overlap * target_mass_ratio ;
-                
-                target.pos[0] -= horizontal_overlap * mass_ratio;
-                target.pos[1] -= vertical_overlap * mass_ratio;
+                // move object 
+                pos[0] -= horizontal_overlap * target_mass_ratio;
+                pos[1] -= vertical_overlap * target_mass_ratio;
+                // move target
+                target.pos[0] += horizontal_overlap * mass_ratio;
+                target.pos[1] += vertical_overlap * mass_ratio;
+
+                //
+                std::cout << distance_to(target.pos) / ((sqrt(mass)/64.0) + (sqrt(target.mass)/64.0)) << '\n';
             }
     };
 

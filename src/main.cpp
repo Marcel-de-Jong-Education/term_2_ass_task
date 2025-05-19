@@ -13,6 +13,8 @@ std::vector<celestial::celestial_body> celestial_bodies = {}; // a vector of all
 std::vector<celestial::celestial_body>* project_logic::bodies = nullptr; // so the project_logic header can monipulate the celestial_bodies vector
 
 unsigned int initial_object_count = 16; // how many objects are there at the start of the programme
+
+
  
 void framebuffer_size_callback(GLFWwindow *window, int width, int height) //
 {
