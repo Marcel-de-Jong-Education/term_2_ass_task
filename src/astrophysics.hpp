@@ -159,18 +159,26 @@ namespace celestial //
 
             void correct_overlap(celestial_body& target) // assumes objects are already overlapping
             {
-                //double overlapping_distance = ((sqrt(mass)/64) + (sqrt(target.mass)/64)) - distance_to(target.pos); // currently we are treating them as squares, TODO: treat them as the circles they are
-                double dx = (pos[0] - target.pos[0]) / 4;
-                double dy = (pos[1] - target.pos[1]) / 4;
+                double distance = distance_to(target.pos);
+                double overlapping_distance = ((sqrt(mass)/64) + (sqrt(target.mass)/64)) - distance; // currently we are treating them as squares, TODO: treat them as the circles they are
+
+                double dx = (pos[0] - target.pos[0]) /4; // x_1 - x_2
+                double dy = (pos[1] - target.pos[1]) /4; // y_1 - y_2
+
+                double d_ratio = overlapping_distance / distance;
+
+                double horizontal_overlap = dx / distance * overlapping_distance; // for every unit of distance we get this much horizontal overlap, then multiply by the ratio between overlap and total as a scale factor
+                double vertical_overlap = dy / distance * overlapping_distance;
+
                 // move both objects away scaled by their mass (an object that takes up 9/10 of the sum of the masses moves 1/10 the distance)
                 double mass_ratio = mass / (mass + target.mass);
                 double target_mass_ratio = target.mass / (mass + target.mass);
 
-                pos[0] += dx * target_mass_ratio ;
-                pos[1] += dy * target_mass_ratio ;
+                pos[0] += horizontal_overlap * target_mass_ratio ;
+                pos[1] += vertical_overlap * target_mass_ratio ;
                 
-                target.pos[0] -= dx * mass_ratio;
-                target.pos[1] -= dy * mass_ratio;
+                target.pos[0] -= horizontal_overlap * mass_ratio;
+                target.pos[1] -= vertical_overlap * mass_ratio;
             }
     };
 
