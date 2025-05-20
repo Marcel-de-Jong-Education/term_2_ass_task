@@ -27,7 +27,7 @@ namespace project_logic
         std::vector<double> gravitational_moment = {0,0}; // initialised outside the loop to save resources
         for (celestial::celestial_body& object : objects) // find forces
         {
-            gravitational_moment = object.calculate_gravitational_moment(objects); // 
+            gravitational_moment = object.calculate_gravitational_imbalance(objects); // 
 
             // ADD and not SET the gravitational moment to conserve momentum!!
             object.motion_vector[0] += gravitational_moment[0]; 
