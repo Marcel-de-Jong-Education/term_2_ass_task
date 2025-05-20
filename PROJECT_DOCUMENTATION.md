@@ -121,7 +121,7 @@ Otherwise, all input is handled properly!
 It runs well`*` on my laptop (GTX 1060, Core i5-8350U, 16GB DDR4, Windows 11) with as many as 100 objects.
 *But* due to the $`O(n^2)`$ time complexity when 256 objects were tested the framerate was in the single digits.
 
-`*`*>60fps*
+`*`*>=60fps*
 
 ### 3. How readable, structured and maintainable is the code?
 The code is very readable with numerous comments detailing its functions.
@@ -140,16 +140,12 @@ Fix the CLI bug, have the CLI close itself and properly work the inheritence of 
 #### Graphics
 
 * Projection lines / trails
-* Glow <difficult>
 
 #### Physics
 
 * Collision
-* Path Traced collisions
-* Network collision optimisation <My own idea>
+* Elasticity
 * Orbits
-* Destructible objects 
-* Objects explode into smaller ones on impact <difficult>
 
 #### Simulated Space
 
@@ -157,7 +153,6 @@ Fix the CLI bug, have the CLI close itself and properly work the inheritence of 
 
 #### Optimisation
 
-* Multithreading <difficult>
 
 #### User Interface
 
@@ -193,4 +188,58 @@ Add first build code block here
 
 
 
+
+
+
+
 # Sprint 3
+## Requirements Definition
+### Functional Requirements
+
+#### Graphics
+
+* Glow <difficult>
+
+#### Physics
+
+
+* Path Traced collisions
+* Network collision optimisation <My own idea>
+* Orbits
+
+#### Simulated Space
+
+* Movable camera <not a priority>
+
+#### Optimisation
+
+* Multithreading <difficult>
+
+#### User Interface
+
+* 
+
+
+
+
+### Non-Functional Requirements
+*
+
+## Determining Specifications
+### Functional Specifications
+*
+
+### Non-Functional Specifications
+*
+
+### Use Case
+Add diagramme here
+
+## Design
+Add Storyboard and data flow here
+
+## Build and Test
+Add first build code block here
+
+## Review
+**Sprint 3 - End of Sprint Review Questions**
