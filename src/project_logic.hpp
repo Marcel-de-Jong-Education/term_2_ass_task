@@ -24,14 +24,14 @@ namespace project_logic
     inline void sim_loop(std::vector<celestial::celestial_body>& objects) // one tick of the simulation
     {
         // Calculate new motion vectors based on gravity
-        std::vector<double> gravitational_moment = {0,0}; // initialised outside the loop to save resources
+        std::vector<double> gravitational_imbalance = {0,0}; // initialised outside the loop to save resources
         for (celestial::celestial_body& object : objects) // find forces
         {
-            gravitational_moment = object.calculate_gravitational_imbalance(objects); // 
+            gravitational_imbalance = object.calculate_gravitational_imbalance(objects); // 
 
-            // ADD and not SET the gravitational moment to conserve momentum!!
-            object.motion_vector[0] += gravitational_moment[0]; 
-            object.motion_vector[1] += gravitational_moment[1]; 
+            // ADD gravitational imbalnce for gravitational acceleration!!
+            object.motion_vector[0] += gravitational_imbalance[0]; 
+            object.motion_vector[1] += gravitational_imbalance[1]; 
             //
         }
 
