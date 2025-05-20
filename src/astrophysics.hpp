@@ -6,7 +6,7 @@
 #include <cmath> // I hope it is apparent why a module for mathematical functions would be valuable in such a mathematics-heavy project
 #include <vector> // because c-arrays and linked-lists arent as good
 
-const double G = -0.000000000066743; // gravitational constant
+const double G = 0.000000000066743; // gravitational constant
 const double entropy = 0.99999999; // 1 = perfect, 0 = all energy lost instantly
 
 bool sign(long long num) // is a number negative?
@@ -117,8 +117,8 @@ namespace celestial //
                 }
                 double net_force = G * (mass + target.mass) / (distance*distance); // G(m1+m2)/(d^2); the gravitational force felt by BOTH objects COMBINED
                 double self_force = net_force * target.mass / (mass+target.mass); // how much of the force THIS object perceives
-                double dx = pos[0]-target.pos[0]; // x1 - x2
-                double dy = pos[1]-target.pos[1]; // y2 - y2
+                double dx = target.pos[0]-pos[0]; // x1 - x2
+                double dy = target.pos[1]-pos[1]; // y2 - y2
 
                 double force_distance = std::sqrt((dx*dx) + (dy*dy)); // c = sqrt(a^2 + b^2)
                 
