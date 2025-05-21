@@ -12,7 +12,7 @@
 std::vector<celestial::celestial_body> celestial_bodies = {}; // a vector of all the objects that fly around!
 std::vector<celestial::celestial_body>* project_logic::bodies = nullptr; // so the project_logic header can monipulate the celestial_bodies vector
 
-unsigned int initial_object_count = 16; // how many objects are there at the start of the programme
+unsigned int initial_object_count = 32; // how many objects are there at the start of the programme
 
 
  
@@ -27,7 +27,7 @@ int main() // this is so C++ 101 im not going to explain (even tho it would have
 {
     std::cout << "Hello, World!" << std::endl; // first sign of life when the programme starts
 
-    GLFWwindow* window = renderer::init(2048,1024, 1); // INITIALISE THE RENDERER 🔥🔥🔥
+    GLFWwindow* window = renderer::init(2048, 1024, 1); // INITIALISE THE RENDERER 🔥🔥🔥
     
     //// SHADERS ////
     Shader ourShader("./shader.vert", "./shader.frag"); // the programme breaks if these arent in the same place as the executable

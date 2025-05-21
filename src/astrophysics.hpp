@@ -118,7 +118,7 @@ namespace celestial //
                 double net_force = G * (mass + target.mass) / (distance*distance); // G(m1+m2)/(d^2); the gravitational force felt by BOTH objects COMBINED
                 double self_force = net_force * target.mass / (mass+target.mass); // how much of the force THIS object perceives
                 double dx = target.pos[0]-pos[0]; // x1 - x2
-                double dy = target.pos[1]-pos[1]; // y2 - y2
+                double dy = target.pos[1]-pos[1]; // y1 - y2
 
                 double force_distance = std::sqrt((dx*dx) + (dy*dy)); // c = sqrt(a^2 + b^2)
                 

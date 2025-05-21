@@ -75,12 +75,13 @@ namespace project_logic
 
     inline void user_create_object(int xpos, int ypos) // allows the user to create an object!
     {
+        
         std::vector<int> window_dimensions = renderer::getWindowDimensions(); // get the window dimensions
-
         float mass; // mass of the new object
         std::vector<double> position = {}; // position of the new object
         std::vector<double> motion = {}; // motion of the new object
 
+        
         // take inputs //
         std::cout << "Enter object mass:\n";
         while (true) // keep trying until a good input retrieved
@@ -96,7 +97,7 @@ namespace project_logic
             }
         }
 
-        std::cin;
+        //std::cin;
 
         std::string line; // for retrieving input to be processed before use
         std::cout << "Enter object x position:\n";
@@ -232,7 +233,7 @@ namespace project_logic
         FreeConsole(); // detach from whatever console used to exist
 
         AllocConsole(); // new console!! yay!
-
+        
         HWND consoleWnd = GetConsoleWindow(); // get console
         if (consoleWnd) MoveWindow // definite the CLI
         (
@@ -240,7 +241,7 @@ namespace project_logic
             x, y, // spawn position
             500, 800, // dimensions
             TRUE
-        );
+        );       
 
         // Redirect the I/O to the new console!!!
         FILE* fp;
@@ -255,7 +256,11 @@ namespace project_logic
 
         user_create_object(x,y); // create object
 
+        std::cout.flush();
+        std::cerr.flush();
+
         FreeConsole(); // done! :D
+        
     }
 
 
