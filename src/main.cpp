@@ -16,11 +16,6 @@ unsigned int initial_object_count = 16; // how many objects are there at the sta
 
 
  
-void framebuffer_size_callback(GLFWwindow *window, int width, int height) //
-{
-    glViewport(0, 0, width, height);
-}
-
 void processInput(GLFWwindow *window)  // simple function to manage input to the window
 {
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
@@ -32,35 +27,8 @@ int main() // this is so C++ 101 im not going to explain (even tho it would have
 {
     std::cout << "Hello, World!" << std::endl; // first sign of life when the programme starts
 
-    // initialise GLFW
-    glfwInit();
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-    #ifdef __APPLE__
-    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-    #endif
-
-    GLFWwindow *window = glfwCreateWindow(2048, 1024, "Space", NULL, NULL); // initialise the GLFW window to be 2048x1024 pixels with the title "Space"
-    if (window == NULL)  // handle something going wrong with window creation
-    {
-        std::cout << "Failed to create GLFW window" << std::endl; 
-        glfwTerminate();
-        return -1;
-    }
-    glfwMakeContextCurrent(window);
-    glfwSetFramebufferSizeCallback(window, renderer::framebuffer_size_callback);
-
-    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) // initialise glad function pointers AND ensure it actually worked while at it
-    {
-        std::cout << "Failed to initialise GLAD" << std::endl;
-        return -1;
-    }
-
-    renderer::getWindowHandle(window); // so renderer.hpp knows what the window is
-
-
-
+    GLFWwindow* window = renderer::init(2048,1024, 1); // INITIALISE THE RENDERER 🔥🔥🔥
+    
     //// SHADERS ////
     Shader ourShader("./shader.vert", "./shader.frag"); // the programme breaks if these arent in the same place as the executable
 
@@ -107,8 +75,6 @@ int main() // this is so C++ 101 im not going to explain (even tho it would have
     project_logic::get_bodies(celestial_bodies); // so the project logic actually can access the vector of objects lol
 
     glfwSetMouseButtonCallback(window, project_logic::mouse_button_callback); // Instruct glfw to use the function defined in project_logic for mouseclicks
-
-    renderer::init(); // INITIALISE THE RENDERER 🔥🔥🔥
 
     while (!glfwWindowShouldClose(window)) // while the window isnt instructed to close
     {

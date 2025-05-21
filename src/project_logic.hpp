@@ -96,6 +96,8 @@ namespace project_logic
             }
         }
 
+        std::cin;
+
         std::string line; // for retrieving input to be processed before use
         std::cout << "Enter object x position:\n";
         

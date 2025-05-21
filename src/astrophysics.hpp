@@ -132,7 +132,7 @@ namespace celestial //
 
 
 
-            std::vector<double> calculate_gravitational_imbalance (std::vector<celestial_body>& objects) const // returns a vector of the net force of all objects on this object gravitationally split orthogonally
+            std::vector<double> calculate_gravitational_imbalance(std::vector<celestial_body>& objects) const // returns a vector of the net force of all objects on this object gravitationally split orthogonally
             {
                 std::vector<double> moment = {0,0}; // {x, y}
                 for (celestial_body& object : objects) // check all objects
@@ -165,8 +165,8 @@ namespace celestial //
                 double dx = target.pos[0] - pos[0]; // x_2 - x_1
                 double dy = target.pos[1] - pos[1]; // y_2 - y_1
 
-                double horizontal_overlap = dx / distance * overlapping_distance /4; // for every unit of distance we get this much horizontal overlap, then multiply by the overlapping distance as the scale factor
-                double vertical_overlap = dy / distance * overlapping_distance /4; // ditto above
+                double horizontal_overlap = dx / distance * overlapping_distance; // for every unit of distance we get this much horizontal overlap, then multiply by the overlapping distance as the scale factor
+                double vertical_overlap = dy / distance * overlapping_distance; // ditto above
 
                 // heavier objects move less and lighter objects move more
                 double mass_ratio = mass / (mass + target.mass);
