@@ -160,9 +160,6 @@ Fix the CLI bug, have the CLI close itself and properly work the inheritence of 
 * Objects retain cursor’s momentum after being dropped
 * Remember previous inputs
 
-
-
-
 ### Non-Functional Requirements
 *
 
