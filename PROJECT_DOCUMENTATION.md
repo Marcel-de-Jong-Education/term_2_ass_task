@@ -132,6 +132,14 @@ It is maintainable because of this proper segmentation of code and reliance on a
 Fix the CLI bug, have the CLI close itself and properly work the inheritence of the classes.
 
 
+
+
+
+
+
+
+
+
 # Sprint 2
 
 ## Requirements Definition
@@ -144,21 +152,18 @@ Fix the CLI bug, have the CLI close itself and properly work the inheritence of 
 #### Physics
 
 * Collision
-* Elasticity
-* Orbits
 
 #### Simulated Space
 
-* Movable camera <not a priority>
+N/A
 
 #### Optimisation
 
+* N/A
 
 #### User Interface
 
-* Click and drag objects
-* Objects retain cursor’s momentum after being dropped
-* Remember previous inputs
+* CLI Randomly not being able to take input bug fix.
 
 ### Non-Functional Requirements
 *
@@ -171,16 +176,23 @@ Fix the CLI bug, have the CLI close itself and properly work the inheritence of 
 *
 
 ### Use Case
-Add diagramme here
+
 
 ## Design
-Add Storyboard and data flow here
-
-## Build and Test
-Add first build code block here
 
 ## Review
 **Sprint 2 - End of Sprint Review Questions**
+### 1. Does it meet the requirements planned?
+Not really. This sprint has been primarily focused on bug fixing.
+
+### 2. Does the programme perform properly?
+There are a couple of major bugs that still need resolution so no.
+
+### 3. How readable, structured and maintainable is the code?
+Hardly any different than before; the code has only been adjusted a little.
+
+### 4. What are some improvements for sprint 3?
+Fix collision overcorrection for good.
 
 
 
@@ -199,7 +211,8 @@ Add first build code block here
 
 #### Physics
 
-
+* Elasticity
+* Orbits
 * Path Traced collisions
 * Network collision optimisation <My own idea>
 * Orbits
