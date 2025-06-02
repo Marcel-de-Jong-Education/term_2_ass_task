@@ -20,7 +20,7 @@ namespace celestial //
     {
         public: // dont need private parts anyway lolll
 
-            float mass; // how much does this thing attract other things?
+            float mass; // In kilogrammes
             std::vector<double> pos; // coordinates of this thing
             std::vector<double> motion_vector; // motion in orthogonal directions of this thing
             float c_colour[3] = { 0.9f, 0.9f, 0.9f }; // a default off-white colour; might change it later idk
