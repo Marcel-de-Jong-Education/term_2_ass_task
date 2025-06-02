@@ -134,17 +134,17 @@ namespace celestial //
 
             std::vector<double> calculate_gravitational_imbalance(std::vector<celestial_body>& objects) const // returns a vector of the net force of all objects on this object gravitationally split orthogonally
             {
-                std::vector<double> moment = {0,0}; // {x, y}
+                std::vector<double> imbalance = {0,0}; // {x, y}
                 for (celestial_body& object : objects) // check all objects
                 {
                     if (&object != this) // because distance to the self can uhm cause problems
                     {
                         // contribute object's pull on this object (look i know the nomenclature is being mildly confusing please just bare with it kay? <3)
-                        moment[0] += gravitational_force_to(object)[0];
-                        moment[1] += gravitational_force_to(object)[1];
+                        imbalance[0] += gravitational_force_to(object)[0];
+                        imbalance[1] += gravitational_force_to(object)[1];
                     }
                 }
-                return moment; //
+                return imbalance; //
             }
 
 
