@@ -69,7 +69,7 @@ namespace celestial //
             }
 
 
-            double velocity() const
+            double speed() const
             {
                 return std::sqrt( (motion_vector[0]*motion_vector[0]) + (motion_vector[1]*motion_vector[1]) ); // v = sqrt(x^2 + y^2)
             }
