@@ -160,7 +160,7 @@ namespace celestial //
             void correct_overlap(celestial_body& target) // assumes objects are already overlapping
             {
                 double distance = distance_to(target.pos);
-                double overlapping_distance = ((sqrt(mass)/64.0) + (sqrt(target.mass)/64.0)) - distance; // r_1 + r_2 - d
+                double overlapping_distance = ((sqrt(mass)/64.0) + (sqrt(target.mass)/64.0))/2 - distance; // r_1 + r_2 - d
 
                 double dx = target.pos[0] - pos[0]; // x_2 - x_1
                 double dy = target.pos[1] - pos[1]; // y_2 - y_1
