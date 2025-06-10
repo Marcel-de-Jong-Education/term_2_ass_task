@@ -115,7 +115,7 @@ namespace celestial //
                     std::cout <<  "WARNING: DIVISION BY ZERO!\n\n"; // this is extremely rare so if it happens itd be cool to know about it!!
                     return std::vector<double>{0,0,0}; // just return 0 and avoid nonsense
                 }
-                double net_force = G * (mass + target.mass) / (distance*distance); // G(m1+m2)/(d^2); the gravitational force felt by BOTH objects COMBINED
+                double net_force = G * (mass * target.mass) / (distance*distance); // G(m1*m2)/(d^2); the gravitational force felt by BOTH objects COMBINED
                 double self_force = net_force * target.mass / (mass+target.mass); // how much of the force THIS object perceives
                 double dx = target.pos[0]-pos[0]; // x1 - x2
                 double dy = target.pos[1]-pos[1]; // y1 - y2
