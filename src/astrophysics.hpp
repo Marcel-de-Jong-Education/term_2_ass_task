@@ -7,7 +7,7 @@
 #include <vector> // because c-arrays and linked-lists arent as good
 
 const double G = 0.000000000066743; // gravitational constant
-const double entropy = 0.99999999; // 1 = perfect, 0 = all energy lost instantly
+const double entropy = 1 + 0*0.99999999; // 1 = perfect, 0 = all energy lost instantly
 
 bool sign(long long num) // is a number negative?
 {
@@ -157,6 +157,19 @@ namespace celestial //
 
 
 
+            void reflect(celestial_body& target)
+            {
+                // swap object's vectors preportionally
+                
+                motion_vector[0] -= target.motion_vector[0] * (mass/(mass + target.mass));
+                motion_vector[1] -= target.motion_vector[1] * (mass/(mass + target.mass));
+
+                target.motion_vector[0] -= motion_vector[0] * (target.mass/(mass + target.mass));
+                target.motion_vector[1] -= motion_vector[1] * (target.mass/(mass + target.mass));
+            }
+
+
+
             void correct_overlap(celestial_body& target) // assumes objects are already overlapping
             {
                 double distance = distance_to(target.pos);
@@ -179,8 +192,7 @@ namespace celestial //
                 target.pos[0] += horizontal_overlap * mass_ratio;
                 target.pos[1] += vertical_overlap * mass_ratio;
 
-                //
-                std::cout << distance_to(target.pos) / ((sqrt(mass)/64.0) + (sqrt(target.mass)/64.0)) << '\n';
+                reflect(target);
             }
     };
 

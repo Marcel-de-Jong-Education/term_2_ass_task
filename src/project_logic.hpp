@@ -20,9 +20,13 @@ namespace project_logic
 {
     extern std::vector<celestial::celestial_body>* bodies; // the vector of bodies in main.cpp shall be accessed locally via this!
 
-
+    double net_energy = 0;
     inline void sim_loop(std::vector<celestial::celestial_body>& objects) // one tick of the simulation
     {
+
+
+        net_energy = 0;
+
         // Calculate new motion vectors based on gravity
         std::vector<double> gravitational_imbalance = {0,0}; // initialised outside the loop to save resources
         for (celestial::celestial_body& object : objects) // find forces
@@ -33,12 +37,22 @@ namespace project_logic
             object.motion_vector[0] += gravitational_imbalance[0]; 
             object.motion_vector[1] += gravitational_imbalance[1]; 
             //
+
+
+
+            // find net energy of the system
+            net_energy += object.speed();
+
+
+
         }
+
+        std::cout << "net energy: " << net_energy << '\n';
 
 
         for (celestial::celestial_body& object : objects) // update positions
         {
-            object.limit_orthogonal_velocity(0.01); // 
+            //object.limit_orthogonal_velocity(0.01); // 
             object.update_position(); //
 
             // collision handling
@@ -254,6 +268,7 @@ namespace project_logic
         std::cin.clear();
         std::cerr.clear();
 
+        std::cout << "go" << '\n';
         user_create_object(x,y); // create object
 
         std::cout.flush();
