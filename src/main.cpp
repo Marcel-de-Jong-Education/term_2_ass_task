@@ -12,7 +12,7 @@
 std::vector<celestial::celestial_body> celestial_bodies = {}; // a vector of all the objects that fly around!
 std::vector<celestial::celestial_body>* project_logic::bodies = nullptr; // so the project_logic header can monipulate the celestial_bodies vector
 
-unsigned int initial_object_count = 2; // how many objects are there at the start of the programme
+unsigned int initial_object_count = 32; // how many objects are there at the start of the programme
 
 
  

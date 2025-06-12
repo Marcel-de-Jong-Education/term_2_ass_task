@@ -20,7 +20,8 @@ namespace celestial //
     {
         public: // dont need private parts anyway lolll
 
-            float mass; // In kilogrammes
+            double mass; // In kilogrammes
+            double elasticity; //
             std::vector<double> pos; // coordinates of this thing
             std::vector<double> motion_vector; // motion in orthogonal directions of this thing
             float c_colour[3] = { 0.9f, 0.9f, 0.9f }; // a default off-white colour; might change it later idk
@@ -157,15 +158,32 @@ namespace celestial //
 
 
 
-            void reflect(celestial_body& target)
+            void reflect(celestial_body& target) // https://cdn.tutsplus.com/gamedev/uploads/legacy/031_whenWorldsCollide/wikigif.gif
             {
-                // swap object's vectors preportionally
+                // find vector and the normal
                 
-                motion_vector[0] -= target.motion_vector[0] * (mass/(mass + target.mass));
-                motion_vector[1] -= target.motion_vector[1] * (mass/(mass + target.mass));
+                double distance = distance_to(target.pos); // 
+                double dx = target.pos[0] - pos[0]; // x_2 - x_1
+                double dy = target.pos[1] - pos[1]; // y_2 - y_1
+                
+                // therefore
+                double x_vector_unit = sqrt((distance*distance) - (dy*dy)) / distance; // how much x for every 1 distance 
+                double y_vector_unit = sqrt((distance*distance) - (dx*dx)) / distance; // how much y for every 1 distance
+                
+                // exactly one of these needs to be negative
+                double x_normal_unit = -y_vector_unit;
+                double y_normal_unit = x_vector_unit;
 
-                target.motion_vector[0] -= motion_vector[0] * (target.mass/(mass + target.mass));
-                target.motion_vector[1] -= motion_vector[1] * (target.mass/(mass + target.mass));
+                double coefficient_to_overcome_gravity = 1.7;
+
+                motion_vector = {
+                    x_vector_unit * motion_vector[0]*coefficient_to_overcome_gravity, 
+                    y_vector_unit * motion_vector[1]*coefficient_to_overcome_gravity
+                    };
+                target.motion_vector = {
+                    x_normal_unit * target.motion_vector[0]*coefficient_to_overcome_gravity, 
+                    y_normal_unit * target.motion_vector[1]*coefficient_to_overcome_gravity
+                };
             }
 
 
