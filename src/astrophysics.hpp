@@ -77,8 +77,19 @@ namespace celestial //
 
 
 
-            void limit_orthogonal_velocity(const double c) // if a body is going faster than c horizontally or vertically, it's speed is set to c
+            double relative_speed(const celestial_body& target) const // returns difference of motion vectors
             {
+				return sqrt(
+					(motion_vector[0] - target.motion_vector[0])*(motion_vector[0] - target.motion_vector[0]) // dx_v^2
+					+
+					(motion_vector[1] - target.motion_vector[1])*(motion_vector[1] - target.motion_vector[1]) // dy_v^2
+				);
+			}
+
+
+
+            void limit_orthogonal_velocity(const double c) // if a body is going faster than c horizontally or vertically, it's speed is set to c
+        	{
                 if (abs(motion_vector[0]) > c) 
                 {
                     motion_vector[0] = (motion_vector[0] < 0) ? -c : c;
@@ -165,25 +176,13 @@ namespace celestial //
                 double distance = distance_to(target.pos); // 
                 double dx = target.pos[0] - pos[0]; // x_2 - x_1
                 double dy = target.pos[1] - pos[1]; // y_2 - y_1
-                
+
+                // distance/velocity == dx/x_vector == dy/y_vector
+				double impact_speed = relative_speed(target);
+                double scale_factor == distance/impact_speed);
                 // therefore
-                double x_vector_unit = sqrt((distance*distance) - (dy*dy)) / distance; // how much x for every 1 distance 
-                double y_vector_unit = sqrt((distance*distance) - (dx*dx)) / distance; // how much y for every 1 distance
-                
-                // exactly one of these needs to be negative
-                double x_normal_unit = -y_vector_unit;
-                double y_normal_unit = x_vector_unit;
-
-                double coefficient_to_overcome_gravity = 1.7;
-
-                motion_vector = {
-                    x_vector_unit * motion_vector[0]*coefficient_to_overcome_gravity, 
-                    y_vector_unit * motion_vector[1]*coefficient_to_overcome_gravity
-                    };
-                target.motion_vector = {
-                    x_normal_unit * target.motion_vector[0]*coefficient_to_overcome_gravity, 
-                    y_normal_unit * target.motion_vector[1]*coefficient_to_overcome_gravity
-                };
+                double x_vector_unit = dx*scale_factor; // how much x velocity for every 1 speed
+                double y_vector_unit = dy*scale_factor; // how much y velocity for every 1 speed
             }
 
 
