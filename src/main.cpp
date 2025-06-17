@@ -68,7 +68,7 @@ int main() // this is so C++ 101 im not going to explain (even tho it would have
         circle_list[i].origin[1] = (float)celestial_bodies[i].pos[1]; 
         //
 
-        circle_list[i].radius = sqrt(celestial_bodies[i].mass) / 64.0; // the size of the objects is preportional to the sqrt of their mass!; 64^-1 just feels right idk
+        circle_list[i].radius = celestial_bodies[i].radius; // the size of the objects is preportional to the sqrt of their mass!; 64^-1 just feels right idk
     }
 
 
@@ -108,7 +108,7 @@ int main() // this is so C++ 101 im not going to explain (even tho it would have
             circle_list.back().origin[0] = (float)celestial_bodies.back().pos[0]; 
             circle_list.back().origin[1] = (float)celestial_bodies.back().pos[1]; 
             //
-            circle_list.back().radius = sqrt(celestial_bodies.back().mass) / 64; // size is calculated the same way as the other objects
+            circle_list.back().radius = celestial_bodies.back().radius; // size is calculated the same way as the other objects
         }
     }   
 
