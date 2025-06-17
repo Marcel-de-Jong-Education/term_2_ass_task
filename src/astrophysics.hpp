@@ -127,10 +127,11 @@ namespace celestial //
                     std::cout <<  "WARNING: DIVISION BY ZERO!\n\n"; // this is extremely rare so if it happens itd be cool to know about it!!
                     return std::vector<double>{0,0,0}; // just return 0 and avoid nonsense
                 }
-		// G*m_1*m_2 / d^2
+		    	// given mass is in kg and distance is in metres
+			// G*m_1*m_2 / d^2 
                 double force = G * (mass * target.mass) / (distance*distance); 
-		// F = ma
-		// a = F/m
+			// F = ma
+			// a = F/m
                 double self_force = force / mass; // account for inertia
 		    
                 double dx = target.pos[0]-pos[0]; // x1 - x2
