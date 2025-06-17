@@ -41,7 +41,7 @@ namespace project_logic
 
 
             // find net energy of the system
-            net_energy += object.speed();
+            net_energy += object.mass * object.speed() / 2; // E_k = mv^2 / 2
 
 
 
