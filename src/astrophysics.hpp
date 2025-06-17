@@ -25,12 +25,16 @@ namespace celestial //
             std::vector<double> pos; // coordinates of this thing
             std::vector<double> motion_vector; // motion in orthogonal directions of this thing
             float c_colour[3] = { 0.9f, 0.9f, 0.9f }; // a default off-white colour; might change it later idk
+			double radius;
+		
 
             celestial_body(float mass_arg, const std::vector<double>& pos_arg, const std::vector<double>& motion_vector_arg): // initialise 
                 mass(mass_arg), // send mass
                 pos(pos_arg), // send position
                 motion_vector(motion_vector_arg) // send motion
-            {}
+            {
+				radius = sqrt(mass)/128.0;
+			}
 
 
 
@@ -169,7 +173,7 @@ namespace celestial //
 
             bool detect_collision(celestial_body& target) const // returns if an object is inside another
             {
-                return (distance_to(target.pos) < ((sqrt(mass)/64.0) + (sqrt(target.mass)/64.0))/2); // object sizes are sqrt(mass)/64
+                return (distance_to(target.pos) < (radius + target.radius)/2); // 
             }
 
 
@@ -195,7 +199,7 @@ namespace celestial //
             void correct_overlap(celestial_body& target) // assumes objects are already overlapping
             {
                 double distance = distance_to(target.pos);
-                double overlapping_distance = ((sqrt(mass)/64.0) + (sqrt(target.mass)/64.0))/2 - distance; // r_1 + r_2 - d
+                double overlapping_distance = (radius + target.radius)/2 - distance; // r_1 + r_2 - d
 
                 double dx = target.pos[0] - pos[0]; // x_2 - x_1
                 double dy = target.pos[1] - pos[1]; // y_2 - y_1
